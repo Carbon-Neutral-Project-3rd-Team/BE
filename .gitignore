@@ -36,3 +36,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# ignore entity temp
+src/main/java/carbon/carbon_be/entity/
