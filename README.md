@@ -1,4 +1,4 @@
 # BE
 ---
 - java: 17
-- springBoot
+- springBoot 3.5.6
