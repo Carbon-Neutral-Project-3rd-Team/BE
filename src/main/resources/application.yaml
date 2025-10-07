@@ -23,9 +23,9 @@ spring:
 
 springdoc:
   swagger-ui:
-    path: /api-test  # swagger-ui ?? ??? ?? ??, ?? ??? ???? http://localhost:8080/swagger-ui/index.html? ????? ?.
+    path: /api-test  # swagger-ui 접속 주소를 추가, http://localhost:8080/swagger-ui/index.html로 리다이렉션.
 
-    groups-order: DESC # path, query, body, response ??? ??
+    groups-order: DESC # path, query, body, response 순서
 
   paths-to-match:
-    - /api/** # swagger-ui? ??? api? ????? ??
+    - /api/** # swagger-ui api ui 형식
