@@ -6,5 +6,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface DailyStepsRepository extends JpaRepository<DailySteps, Long> {
-    Optional<DailySteps> findByUserIdAndRecordDate(Long userId, LocalDate recordDate);
+    DailySteps findTopByUserIdOrderByRecordDateDesc(Long userId);
+    // 그 유저의 최신 걸음 수 레코드 하나 가져오기
 }

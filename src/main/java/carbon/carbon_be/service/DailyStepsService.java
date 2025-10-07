@@ -13,8 +13,7 @@ public class DailyStepsService {
         this.repository = repository;
     }
 
-    public DailySteps getSteps(Long userId, LocalDate date) {
-        return repository.findByUserIdAndRecordDate(userId, date)
-                .orElseThrow(() -> new RuntimeException("데이터가 없습니다."));
+    public DailySteps getLatestSteps(Long userId) {
+        return repository.findTopByUserIdOrderByRecordDateDesc(userId);
     }
 }
