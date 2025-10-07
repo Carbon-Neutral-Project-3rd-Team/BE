@@ -35,6 +35,9 @@ dependencies {
 
     // swagger setting
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // DB 최신 버전 적용
+    runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {
