@@ -45,10 +45,12 @@ public class SupportTicket {
 
     /** 공개 여부 */
     @Column(nullable = false)
+    @Builder.Default
     private Boolean isPublic = false;
 
     /** 접수 상태 */
     @Column(nullable = false, length = 30)
+    @Builder.Default
     private String status = "OPEN";
 
     /** 관리자 답변 내용 */

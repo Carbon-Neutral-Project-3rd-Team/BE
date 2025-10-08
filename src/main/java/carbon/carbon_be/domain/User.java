@@ -46,10 +46,12 @@ public class User {
 
     /** 권한 */
     @Column(nullable = false, length = 20)
+    @Builder.Default
     private String role = "USER";
 
     /** 로그인 제공자 (local = 회원가입, 로그인, kakao, google, naver 등) */
     @Column(nullable = false, length = 20)
+    @Builder.Default
     private String authProvider = "local";
 
     /** 소셜 제공자 내 고유 ID (providerId) */
@@ -58,6 +60,7 @@ public class User {
 
     /** 누적 걸음 수 (기본값 0) */
     @Column(nullable = false)
+    @Builder.Default
     private Integer stepCnt = 0;
 
     /** 회원가입 시각 */
@@ -88,6 +91,7 @@ public class User {
 
     /** DailyStep과 1:N 관계 */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
     private List<DailyStep> dailyStep = new ArrayList<>();
 
 
@@ -100,6 +104,7 @@ public class User {
 
     /** SupportTicket과 1:N 관계 */
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY) // User 삭제 시에도 남아있게 함
+    @Builder.Default
     private List<SupportTicket> supportTicket = new ArrayList<>();
 
     public void addSupportTicket(SupportTicket supportticket) {
