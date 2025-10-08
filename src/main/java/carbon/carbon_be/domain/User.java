@@ -1,30 +1,31 @@
-package carbon.carbon_be.entity;
+package carbon.carbon_be.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-/** 사용자 정보를 저장하는 User 엔티티
- **/
+/** 사용자 정보를 저장하는 User 엔티티 **/
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "users",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_users_email", columnNames = "email"),
-                @UniqueConstraint(name = "uq_users_provider", columnNames = {"provider", "provider_id"})
-        }) // email번호, 각 소셜별로 고유 id값들 중복안되게 설정
-@Getter
-@Setter
-@NoArgsConstructor
+                @UniqueConstraint(name = "uq_users_provider", columnNames = {"auth_provider", "provider_id"})
+        })
 public class User {
     /** 기본키 (Primary Key) */
     @Id
@@ -49,11 +50,11 @@ public class User {
 
     /** 로그인 제공자 (local = 회원가입, 로그인, kakao, google, naver 등) */
     @Column(nullable = false, length = 20)
-    private String auth_provider = "local";
+    private String authProvider = "local";
 
     /** 소셜 제공자 내 고유 ID (providerId) */
     @Column(length = 100)
-    private String provider_id;
+    private String providerId;
 
     /** 누적 걸음 수 (기본값 0) */
     @Column(nullable = false)
@@ -61,9 +62,38 @@ public class User {
 
     /** 회원가입 시각 */
     @CreatedDate
-    private LocalDateTime created_at;
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     /** 최근 정보 수정 시각 */
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
+
+    /** UserPoint와의 1:1 관계 */
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private UserPoint userPoint;
+
+
+    // =============================
+    // 연관관계 메서드
+    // =============================
+
+    public void setUserPoint(UserPoint userPoint) {
+        this.userPoint = userPoint;
+        if (userPoint != null && userPoint.getUser() != this) {
+            userPoint.setUser(this);
+        }
+    }
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<DailyStep> dailySteps = new ArrayList<>();
+
+
+    public void addDailyStep(DailyStep step) {
+        this.dailySteps.add(step);
+        if (step.getUser() != this && step != null) {
+            step.setUser(this);
+        }
+    }
 }
