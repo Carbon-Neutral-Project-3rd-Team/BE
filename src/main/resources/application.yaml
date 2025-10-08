@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      minimum-idle: 2
+      connection-timeout: 20000
+      idle-timeout: 300000
+
+  jpa:
+    show-sql: ${SHOW_SQL:false}
+    hibernate:
+      ddl-auto: ${DDL_AUTO:create}
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+
+
+springdoc:
+  swagger-ui:
+    path: /api-test  # swagger-ui 접속 주소를 추가, http://localhost:8080/swagger-ui/index.html로 리다이렉션.
+
+    groups-order: DESC # path, query, body, response 순서
+
+  paths-to-match:
+    - /api/** # swagger-ui api ui 형식
