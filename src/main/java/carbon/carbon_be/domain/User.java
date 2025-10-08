@@ -69,14 +69,14 @@ public class User {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    // =============================
+    // 연관관계 메서드
+    // =============================
+
     /** UserPoint와의 1:1 관계 */
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private UserPoint userPoint;
 
-
-    // =============================
-    // 연관관계 메서드
-    // =============================
 
     public void setUserPoint(UserPoint userPoint) {
         this.userPoint = userPoint;
@@ -86,14 +86,26 @@ public class User {
     }
 
 
+    /** DailyStep과 1:N 관계 */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<DailyStep> dailySteps = new ArrayList<>();
+    private List<DailyStep> dailyStep = new ArrayList<>();
 
 
     public void addDailyStep(DailyStep step) {
-        this.dailySteps.add(step);
-        if (step.getUser() != this && step != null) {
+        this.dailyStep.add(step);
+        if (step != null && step.getUser() != this) {
             step.setUser(this);
+        }
+    }
+
+    /** SupportTicket과 1:N 관계 */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY) // User 삭제 시에도 남아있게 함
+    private List<SupportTicket> supportTicket = new ArrayList<>();
+
+    public void addSupportTicket(SupportTicket supportticket) {
+        this.supportTicket.add(supportticket);
+        if (supportticket != null && supportticket.getUser() != this) {
+            supportticket.setUser(this);
         }
     }
 }
