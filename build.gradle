@@ -38,6 +38,8 @@ dependencies {
 
     // DB 최신 버전 적용
     runtimeOnly 'com.mysql:mysql-connector-j'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 tasks.named('test') {
