@@ -1,4 +1,4 @@
-package carbon.carbon_be.global.config;
+package carbon.carbon_be.global.utility;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
