@@ -29,3 +29,8 @@ springdoc:
 
   paths-to-match:
     - /api/** # swagger-ui api ui 형식
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRE_MS:86400000}
