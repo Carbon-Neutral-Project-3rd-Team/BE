@@ -23,6 +23,9 @@ public class JwtTokenProvider {
    @Value("${JWT.EXPIRE_MS}")
    private long accessTokenExpireMs;
 
+   @Value("${JWT.REFRESH_EXPIRE_MS}")
+   private long refreshTokenExpireMs;
+
    @PostConstruct
    public void init() {
       secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
@@ -41,7 +44,6 @@ public class JwtTokenProvider {
 
       // 3. 토큰 빌드 및 생성
       return Jwts.builder()
-          // 완성된 Claims 객체 설정
           .setClaims(claims)
           // 토큰 발행 시간 (Issued At) 설정
           .setIssuedAt(now)
@@ -61,15 +63,30 @@ public class JwtTokenProvider {
           .getSubject();
    }
 
-       public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
+   public boolean validateToken(String token) {
+      try {
+         Jwts.parserBuilder()
+             .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
+             .build()
+             .parseClaimsJws(token);
+         return true;
+      } catch (JwtException | IllegalArgumentException e) {
+         return false;
+      }
+   }
+
+   public String createRefreshToken(String email, Long userId) {
+      Claims claims = Jwts.claims().setSubject(email);
+      claims.put("userId", userId);
+
+      Date now = new Date();
+      Date validity = new Date(now.getTime() + refreshTokenExpireMs);
+
+      return Jwts.builder()
+          .setClaims(claims)
+          .setIssuedAt(now)
+          .setExpiration(validity)
+          .signWith(SignatureAlgorithm.HS256, secretKey)
+          .compact();
+   }
 }

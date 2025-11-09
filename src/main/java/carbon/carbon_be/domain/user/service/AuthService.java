@@ -66,7 +66,7 @@ public class AuthService {
 
         // 2) JWT 생성
         String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), user.getId());
-        String refreshToken = "옵션: refresh token도 원하면 따로 생성";
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getEmail(), user.getId());
 
         return new LoginResponseDto(accessToken, refreshToken);
     }
