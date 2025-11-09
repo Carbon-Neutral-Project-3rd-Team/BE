@@ -17,13 +17,13 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-   @Value("${JWT.SECRET}")
+   @Value("${jwt.secret}")
    private String secretKey;
 
-   @Value("${JWT.EXPIRE_MS}")
+   @Value("${jwt.expire_ms}")
    private long accessTokenExpireMs;
 
-   @Value("${JWT.REFRESH_EXPIRE_MS}")
+   @Value("${jwt.refresh_expire_ms}")
    private long refreshTokenExpireMs;
 
    @PostConstruct
