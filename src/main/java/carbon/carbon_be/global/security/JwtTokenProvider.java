@@ -15,7 +15,7 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JwtUtil {
+public class JwtTokenProvider {
 
    @Value("${JWT.SECRET}")
    private String secretKey;
