@@ -48,7 +48,7 @@ public class AuthService {
       // 저장
       User saved = userRepository.save(user);
 
-      return new SignupResponseDto(saved.getId(), saved.getEmail(), saved.getUsername());
+      return new SignupResponseDto(saved.getId(), saved.getEmail(), saved.getUsername(),saved.getCreatedAt());
    }
 
 
