@@ -69,7 +69,7 @@ public class StepStatsService {
    @Transactional(readOnly = true)
     public TotalStepResponseDto getTotalSteps(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         long total = totalStepRepository.findByUser(user)
                 .map(TotalStep::getTotalStepCount)
