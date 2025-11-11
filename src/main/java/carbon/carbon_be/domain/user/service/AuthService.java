@@ -53,7 +53,7 @@ public class AuthService {
 
 
     public LoginResponseDto login(LoginRequestDto request) {
-        // 1) 이메일/비번 검증 (Spring Security에게 맡김)
+        // 이메일/비번 검증
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -64,7 +64,7 @@ public class AuthService {
         CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
         User user = principal.getUser();
 
-        // 2) JWT 생성
+        // JWT 생성
         String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), user.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getEmail(), user.getId());
 
