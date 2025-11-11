@@ -28,8 +28,13 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/health",
-                            "/swagger-ui/**", "/api-test","/v3/api-docs/**").permitAll()
+                        .requestMatchers(
+                            "/api/auth/signup",
+                            "/api/auth/login",
+                            "/api/health",
+                            "/swagger-ui/**",
+                            "/api-test",
+                            "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(customUserDetailsService)

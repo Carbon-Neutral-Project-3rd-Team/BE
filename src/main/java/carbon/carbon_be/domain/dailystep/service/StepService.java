@@ -46,7 +46,7 @@ public class StepService {
          dailyStep.updateStepCount(newStepCount);
          dailyStepRepository.save(dailyStep);
 
-         // [2] 누적 걸음수 갱신
+         // total step 갱신
          TotalStep totalStep = totalStepRepository.findByUser(user)
              .orElseGet(() -> TotalStep.builder()
                  .user(user)

@@ -41,14 +41,14 @@ public class AuthService {
       User user = User.builder()
           .email(signupRequestDto.getEmail())
           .password(encodePassword)
-          .username(signupRequestDto.getName())
+          .username(signupRequestDto.getUsername())
           .role(UserRole.USER)
           .build();
 
       // 저장
       User saved = userRepository.save(user);
 
-      return new SignupResponseDto(saved.getId(), saved.getEmail(), saved.getUsername());
+      return new SignupResponseDto(saved.getId(), saved.getEmail(), saved.getUsername(),saved.getCreatedAt());
    }
 
 
