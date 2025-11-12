@@ -38,8 +38,17 @@ public class PointConvertService {
             if (pointHistoryRepository.existsByUserAndRecordDate(ds.getUser(), yesterday))
                 continue;
 
+            // 어제 남은 잔여 걸음 이월 반영
+            int yesterdayRemainder = stepConversionRepository.findLatestByUser(ds.getUser())
+                    .map(StepConversion::getUnconvertedSteps)
+                    .orElse(0);
+            int totalSteps = ds.getStepCount() + yesterdayRemainder;
             int validSteps = Math.min(ds.getStepCount(), 10_000);
-            int points = Math.min(validSteps / 50, 200);
+            int points = validSteps / 50;
+            int remainder = totalSteps % 50;
+
+            // 이월 저장
+            stepConversionRepository.save(StepConversion.of(ds.getUser(), validSteps - remainder, remainder, points));
 
             // PointHistory 생성
             PointHistory history = PointHistory.builder()
@@ -70,7 +79,15 @@ public class PointConvertService {
         DailyStep dailyStep = dailyStepRepository.findByUserAndRecordDate(user, today)
                 .orElseThrow(() -> new IllegalStateException("오늘 걸음 데이터가 없습니다."));
 
-        int totalSteps = dailyStep.getStepCount();
+        // 오늘 걸음수
+        int todaySteps = dailyStep.getStepCount();
+
+        // 어제 잔여 걸음수
+        int yesterdayRemainder = stepConversionRepository.findLatestByUser(user)
+                .map(StepConversion::getUnconvertedSteps)
+                .orElse(0);
+
+        int totalSteps = todaySteps + yesterdayRemainder;
 
         // 지금까지 전환된 걸음수 합계
         int convertedSteps = stepConversionRepository.sumConvertedStepsByUserAndDate(user, today);
