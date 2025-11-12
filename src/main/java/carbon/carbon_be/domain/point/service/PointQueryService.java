@@ -7,7 +7,9 @@ import carbon.carbon_be.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,11 +17,9 @@ public class PointQueryService {
 
     private final PointHistoryRepository pointHistoryRepository;
 
-
 //     사용자 포인트 적립 이력 전체 조회 (최신순)
 //     @param user 로그인된 사용자
 //     @return 날짜별 포인트 적립 내역 리스트
-
 
     public List<PointHistoryResponseDto> getUserPointHistory(User user) {
         // DB에서 해당 유저의 포인트 이력 가져오기
@@ -30,5 +30,14 @@ public class PointQueryService {
         return histories.stream()
                 .map(PointHistoryResponseDto::fromEntity)
                 .toList();
+    }
+
+    // 오늘 적립된 포인트 조회
+    public int getTodayPoints(User user) {
+        LocalDate today = LocalDate.now();
+        Optional<PointHistory> todayHistory =
+                pointHistoryRepository.findByUserAndRecordDate(user, today);
+
+        return todayHistory.map(PointHistory::getEarnedPoints).orElse(0);
     }
 }

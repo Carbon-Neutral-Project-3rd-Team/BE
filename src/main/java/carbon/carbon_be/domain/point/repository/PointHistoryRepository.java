@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface PointHistoryRepository extends JpaRepository<PointHistory, Long> {
 
@@ -16,6 +17,9 @@ public interface PointHistoryRepository extends JpaRepository<PointHistory, Long
 
     // 특정 유저의 전체 포인트 적립 내역 조회 (최신순)
     List<PointHistory> findByUserOrderByRecordDateDesc(User user);
+
+    // 오늘 날짜 포인트 이력 조회
+    Optional<PointHistory> findByUserAndRecordDate(User user, LocalDate recordDate);
 
     // 특정 기간 동안의 포인트 적립 내역 조회
     @Query("SELECT ph FROM PointHistory ph " +

@@ -37,4 +37,10 @@ public class PointController {
         // 사용자 기준 포인트 이력 조회
         return pointQueryService.getUserPointHistory(user.getUser());
     }
+
+    //오늘 적립된 포인트 조회
+    @GetMapping("/today")
+    public int getTodayPoints(@AuthenticationPrincipal CustomUserDetails user) {
+        return pointQueryService.getTodayPoints(user.getUser());
+    }
 }
