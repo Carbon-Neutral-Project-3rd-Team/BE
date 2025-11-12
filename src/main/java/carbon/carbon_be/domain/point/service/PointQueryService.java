@@ -6,7 +6,7 @@ import carbon.carbon_be.domain.point.dto.TodayPointResponseDto;
 import carbon.carbon_be.domain.point.entity.PointHistory;
 import carbon.carbon_be.domain.point.repository.PointHistoryRepository;
 import carbon.carbon_be.domain.user.entity.User;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
