@@ -1,9 +1,12 @@
 package carbon.carbon_be.domain.point.service;
 
+import carbon.carbon_be.domain.point.dto.PointBalanceResponseDto;
 import carbon.carbon_be.domain.point.dto.PointHistoryResponseDto;
+import carbon.carbon_be.domain.point.dto.TodayPointResponseDto;
 import carbon.carbon_be.domain.point.entity.PointHistory;
 import carbon.carbon_be.domain.point.repository.PointHistoryRepository;
 import carbon.carbon_be.domain.user.entity.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +36,25 @@ public class PointQueryService {
     }
 
     // 오늘 적립된 포인트 조회
-    public int getTodayPoints(User user) {
+    @Transactional(readOnly = true)
+    public TodayPointResponseDto getTodayPoints(User user) {
         LocalDate today = LocalDate.now();
-        Optional<PointHistory> todayHistory =
-                pointHistoryRepository.findByUserAndRecordDate(user, today);
+        int points = pointHistoryRepository
+                .findByUserAndRecordDate(user, today)
+                .map(PointHistory::getEarnedPoints)
+                .orElse(0);
 
-        return todayHistory.map(PointHistory::getEarnedPoints).orElse(0);
+        return TodayPointResponseDto.of(points);
+    }
+
+
+    //누적 포인트 조회
+    public PointBalanceResponseDto getTotalPoints(User user) {
+        int total = pointHistoryRepository.findByUserOrderByRecordDateDesc(user)
+                .stream()
+                .mapToInt(PointHistory::getEarnedPoints)
+                .sum();
+
+        return PointBalanceResponseDto.of(total);
     }
 }
