@@ -17,6 +17,8 @@ public class PointScheduler {
 
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void runDailyPointConversion() {
+        log.info("자동 포인트 적립 실행");
         pointConvertService.convertStepsToPointsAuto();
+        log.info("자동 포인트 적립 실행 완료");
     }
 }
