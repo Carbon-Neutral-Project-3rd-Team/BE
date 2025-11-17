@@ -43,3 +43,6 @@ out/
 src/.DB_Store
 src/main/.DB_Store
 src/main/java/carbon/.DB_Store
+src/test/.DS_Store
+src/test/java/.DS_Store
+src/test/java/carbon/.DS_Store
