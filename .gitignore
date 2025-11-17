@@ -39,3 +39,7 @@ out/
 
 .idea/
 .env/
+
+src/.DB_Store
+src/main/.DB_Store
+src/main/java/carbon/.DB_Store
