@@ -1,0 +1,25 @@
+services:
+  carbon-server:
+    image: 793622242168.dkr.ecr.ap-northeast-2.amazonaws.com/carbon-server:latest
+    ports:
+      - 8080:8080
+    depends_on:
+        my-db:
+          condition: service_healthy
+
+  my-db:
+    image: mysql
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_DATABASE: carbon_be_db
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
+      interval: 5s
+      retries: 10
