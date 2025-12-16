@@ -23,3 +23,6 @@ services:
       test: [ "CMD", "mysqladmin", "ping" ]
       interval: 5s
       retries: 10
+
+volumes:
+  mysql_data:
