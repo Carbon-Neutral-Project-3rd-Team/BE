@@ -1,6 +1,9 @@
 services:
   carbon-server:
     image: 793622242168.dkr.ecr.ap-northeast-2.amazonaws.com/carbon-server:latest
+    entrypoint: ["java", "-Xmx400M", "-Xms256M", "-XX:+ExitOnOutOfMemoryError", "-jar", "project.jar"]
+    env_file:
+      - .env
     ports:
       - 8080:8080
     depends_on:
@@ -9,6 +12,9 @@ services:
 
   my-db:
     image: mysql
+    command:
+      - --performance_schema=OFF
+      - --max_connections=50
     environment:
       TZ: Asia/Seoul
       MYSQL_DATABASE: carbon_be_db
