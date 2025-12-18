@@ -23,6 +23,22 @@ spring:
         use_sql_comments: true
         dialect: org.hibernate.dialect.MySQLDialect #dialect를 어떤 것을 쓸 것인지 명시적으로 표기
 
+  cloud:
+    aws:
+      credentials:
+        access-key: ${S3_ACCESS_KEY}
+        secret-key: ${S3_SECRET_KEY}
+      s3:
+        bucket: ${S3_BUCKET_NAME}
+      region:
+        static: ap-northeast-2
+
+app:
+  s3:
+    combos-prefix: combos/v1
+    presign-ttl-seconds: 300
+    fallback-key: combos/v1/default.png
+
 
 springdoc:
   swagger-ui:
