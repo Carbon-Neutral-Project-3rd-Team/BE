@@ -53,4 +53,14 @@ public class CompositeImageService {
 
         return presign.presignGetUrl(bucket, key, ttl);
     }
+
+    public String getDefaultCompositeUrl() {
+    String bucket = awsProps.getS3().getBucket();
+    Duration ttl = Duration.ofSeconds(appS3Props.getPresignTtlSeconds());
+
+    String key = appS3Props.getFallbackKey();
+
+    return presign.presignGetUrl(bucket, key, ttl);
+}
+
 }

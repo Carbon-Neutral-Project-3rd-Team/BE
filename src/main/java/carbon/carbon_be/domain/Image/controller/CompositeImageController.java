@@ -20,5 +20,13 @@ public class CompositeImageController {
                 .imageUrl(service.getCompositeUrl(request))
                 .build();
     }
+
+     @GetMapping("/default")
+    public CompositeImageResponseDto getDefaultComposite() {
+        String url = service.getDefaultCompositeUrl();
+        return CompositeImageResponseDto.builder()
+                .imageUrl(url)
+                .build();
+    }
 }
 
